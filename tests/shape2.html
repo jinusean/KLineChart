@@ -34,7 +34,9 @@ limitations under the License.
         chart.createTechnicalIndicator('MACD')
         chart.applyNewData(generated())
         // 图形创建在主图上
-        chart.createShape('segment', 'candle_pane')
+        setTimeout(() => {
+          chart.createShape('segment', 'candle_pane')
+        }, 1000)
       }
     </script>
   </body>

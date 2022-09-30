@@ -29,6 +29,8 @@ const SHAPE_DRAW_STEP_START = 1
 // 标记图形绘制步骤结束
 const SHAPE_DRAW_STEP_FINISHED = -1
 
+const MAGNET_SENSITIVITY = 24
+
 /**
  * 事件操作元素类型
  * @type {{OTHER: string, POINT: string, NONE: string}}
@@ -576,7 +578,7 @@ export default class Shape extends Overlay {
     if (value > kLineData.high) {
       if (this._mode === ShapeMode.WEAK_MAGNET) {
         const highY = this._yAxis.convertToPixel(kLineData.high)
-        const buffValue = this._yAxis.convertFromPixel(highY - 8)
+        const buffValue = this._yAxis.convertFromPixel(highY - MAGNET_SENSITIVITY)
         if (value < buffValue) {
           return kLineData.high
         }
@@ -587,7 +589,7 @@ export default class Shape extends Overlay {
     if (value < kLineData.low) {
       if (this._mode === ShapeMode.WEAK_MAGNET) {
         const lowY = this._yAxis.convertToPixel(kLineData.low)
-        const buffValue = this._yAxis.convertFromPixel(lowY - 8)
+        const buffValue = this._yAxis.convertFromPixel(lowY - MAGNET_SENSITIVITY)
         if (value > buffValue) {
           return kLineData.low
         }

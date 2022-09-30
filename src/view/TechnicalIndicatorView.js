@@ -80,7 +80,7 @@ export default class TechnicalIndicatorView extends View {
    * 绘制指标
    */
   _drawTechs () {
-    this._ctx.globalCompositeOperation = 'source-over'
+    this._ctx.globalCompositeOperation = 'destination-over'
     const to = this._chartStore.timeScaleStore().to()
     const techOptions = this._chartStore.styleOptions().technicalIndicator
     const techs = this._chartStore.technicalIndicatorStore().instances(this._paneId)
