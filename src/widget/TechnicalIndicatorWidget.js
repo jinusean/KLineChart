@@ -17,6 +17,11 @@ import TechnicalIndicatorView from '../view/TechnicalIndicatorView'
 import TechnicalIndicatorOverlayView from '../view/TechnicalIndicatorOverlayView'
 
 export default class TechnicalIndicatorWidget extends Widget {
+  _loadViews (props) {
+    this._overlayView = this._createOverlayView(this._element, props)
+    this._mainView = this._createMainView(this._element, props)
+  }
+
   _createMainView (container, props) {
     return new TechnicalIndicatorView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId)
   }

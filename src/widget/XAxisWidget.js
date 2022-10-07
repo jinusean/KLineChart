@@ -17,6 +17,11 @@ import XAxisView from '../view/XAxisView'
 import XAxisOverlayView from '../view/XAxisOverlayView'
 
 export default class XAxisWidget extends Widget {
+  _loadViews (props) {
+    this._mainView = this._createMainView(this._element, props)
+    this._overlayView = this._createOverlayView(this._element, props)
+  }
+
   _createMainView (container, props) {
     return new XAxisView(container, props.chartStore, props.xAxis)
   }

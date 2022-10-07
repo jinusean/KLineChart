@@ -17,6 +17,11 @@ import YAxisView from '../view/YAxisView'
 import YAxisOverlayView from '../view/YAxisOverlayView'
 
 export default class YAxisWidget extends Widget {
+  _loadViews (props) {
+    this._mainView = this._createMainView(this._element, props)
+    this._overlayView = this._createOverlayView(this._element, props)
+  }
+
   _createMainView (container, props) {
     return new YAxisView(container, props.chartStore, props.yAxis, props.paneId)
   }
