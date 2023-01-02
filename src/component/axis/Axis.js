@@ -136,7 +136,7 @@ export default class Axis {
    * @private
    */
   _computeInterval (range) {
-    const interval = nice(range / 8.0)
+    const interval = nice(range / 24.0)
     const precision = getPrecision(interval)
     return {
       interval, precision

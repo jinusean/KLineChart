@@ -270,6 +270,46 @@ export default class Chart {
     }
   }
 
+  updateDataList (data) {
+    if (isObject(data) && !isArray(data)) {
+      logWarn('updateDataList', 'data', 'data must be an array')
+      return
+    }
+    // merge data
+    data = data.reduce((accum, datum) => {
+      if (accum.length === 0) {
+        accum.push(datum)
+        return accum
+      }
+      const timestamp = formatValue(datum, 'timestamp', 0)
+      const lastDataTimestamp = formatValue(accum[accum.length - 1], 'timestamp', 0)
+      if (timestamp === lastDataTimestamp) {
+        accum[accum.length - 1] = datum
+      } else if (timestamp > lastDataTimestamp) {
+        accum.push(datum)
+      } //
+      return accum
+    }, [])
+    // check if first data is a new candle
+    const chartStore = this._chartPane.chartStore()
+    const dataList = chartStore.dataList()
+    const dataSize = dataList.length
+    const timestamp = formatValue(data[0], 'timestamp', 0)
+    const lastDataTimestamp = formatValue(dataList[dataSize - 1], 'timestamp', 0)
+    if (timestamp >= lastDataTimestamp) {
+      let pos = dataSize
+      if (timestamp === lastDataTimestamp) {
+        pos = dataSize - 1
+      }
+      chartStore.addDataList(data, pos)
+      chartStore.technicalIndicatorStore().calcInstance().finally(
+        _ => {
+          this._chartPane.adjustPaneViewport(false, true, true, true)
+        }
+      )
+    }
+  }
+
   /**
    * 设置加载更多回调
    * @param cb 回调方法

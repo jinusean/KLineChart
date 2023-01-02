@@ -325,31 +325,28 @@ export default class CandleOverlayView extends TechnicalIndicatorOverlayView {
     } else {
       const pricePrecision = this._chartStore.pricePrecision()
       const volumePrecision = this._chartStore.volumePrecision()
+      const handleVolume = (value) => formatBigNumber(formatPrecision(value, volumePrecision))
+      const handlePrice = (value) => formatPrecision(value, pricePrecision)
       values = [
-        formatValue(kLineData, 'timestamp'),
-        formatValue(kLineData, 'open'),
-        formatValue(kLineData, 'close'),
-        formatValue(kLineData, 'high'),
-        formatValue(kLineData, 'low'),
-        formatValue(kLineData, 'volume')
+        formatDate(this._chartStore.timeScaleStore().dateTimeFormat(), formatValue(kLineData, 'timestamp'), 'YYYY-MM-DD hh:mm'),
+        handlePrice(formatValue(kLineData, 'open')),
+        handlePrice(formatValue(kLineData, 'high')),
+        handlePrice(formatValue(kLineData, 'low')),
+        handlePrice(formatValue(kLineData, 'close')),
+        handleVolume(formatValue(kLineData, 'volume')),
+        handleVolume(formatValue(kLineData, 'transactions')),
+        handleVolume(formatValue(kLineData, 'buyVolume')),
+        handleVolume(formatValue(kLineData, 'sellVolume')),
+        handleVolume(formatValue(kLineData, 'buyTransactions')),
+        handleVolume(formatValue(kLineData, 'sellTransactions'))
       ]
-      values.forEach((value, index) => {
-        switch (index) {
-          case 0: {
-            values[index] = formatDate(this._chartStore.timeScaleStore().dateTimeFormat(), value, 'YYYY-MM-DD hh:mm')
-            break
-          }
-          case values.length - 1: {
-            values[index] = formatBigNumber(formatPrecision(value, volumePrecision))
-            break
-          }
-          default: {
-            values[index] = formatPrecision(value, pricePrecision)
-            break
-          }
-        }
-      })
     }
-    return values
+    const color = kLineData.close === kLineData.open ? candleOptions.bar.noChangeColor : kLineData.close > kLineData.open ? candleOptions.bar.upColor : candleOptions.bar.downColor
+    return values.map((value, index) => {
+      return {
+        value,
+        color: index === 0 ? '' : color
+      }
+    })
   }
 }

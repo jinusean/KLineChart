@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-export const DEVIATION = 2
+export const DEVIATION = 4
 
 /**
  * 获取两点之间的距离
@@ -96,8 +96,9 @@ export function getLinearYFromSlopeIntercept (kb, targetCoordinate) {
  * @param coordinate1
  * @param coordinate2
  * @param targetCoordinate
+ * @param DEVIATION
  */
-export function checkCoordinateOnStraightLine (coordinate1, coordinate2, targetCoordinate) {
+export function checkCoordinateOnStraightLine (coordinate1, coordinate2, targetCoordinate, DEVIATION = 8) {
   if (!targetCoordinate || !coordinate1 || !coordinate2) {
     return false
   }
@@ -115,9 +116,10 @@ export function checkCoordinateOnStraightLine (coordinate1, coordinate2, targetC
  * @param coordinate1
  * @param coordinate2
  * @param targetCoordinate
+ * @param DEVIATION
  * @returns {boolean}
  */
-export function checkCoordinateOnRayLine (coordinate1, coordinate2, targetCoordinate) {
+export function checkCoordinateOnRayLine (coordinate1, coordinate2, targetCoordinate, DEVIATION = 8) {
   if (checkCoordinateOnStraightLine(coordinate1, coordinate2, targetCoordinate)) {
     if (coordinate1.x === coordinate2.x) {
       if (coordinate1.y < coordinate2.y) {
@@ -140,8 +142,9 @@ export function checkCoordinateOnRayLine (coordinate1, coordinate2, targetCoordi
  * @param coordinate1
  * @param coordinate2
  * @param targetCoordinate
+ * @param DEVIATION
  */
-export function checkCoordinateOnSegment (coordinate1, coordinate2, targetCoordinate) {
+export function checkCoordinateOnSegment (coordinate1, coordinate2, targetCoordinate, DEVIATION = 8) {
   if (checkCoordinateOnStraightLine(coordinate1, coordinate2, targetCoordinate)) {
     if (coordinate1.x === coordinate2.x) {
       return Math.abs(coordinate1.y - targetCoordinate.y) + Math.abs(coordinate2.y - targetCoordinate.y) - Math.abs(coordinate1.y - coordinate2.y) < DEVIATION * 2
@@ -172,9 +175,10 @@ export function checkCoordinateInCircle (circleCenterCoordinate, radius, targetC
  * @param circleCenterCoordinate
  * @param radius
  * @param targetCoordinate
+ * @param DEVIATION
  * @return {boolean}
  */
-export function checkCoordinateOnCircle (circleCenterCoordinate, radius, targetCoordinate) {
+export function checkCoordinateOnCircle (circleCenterCoordinate, radius, targetCoordinate, DEVIATION = 8) {
   if (!targetCoordinate) {
     return false
   }
@@ -188,9 +192,10 @@ export function checkCoordinateOnCircle (circleCenterCoordinate, radius, targetC
  * @param startAngle
  * @param endAngle
  * @param targetCoordinate
+ * @param DEVIATION
  * @return {boolean}
  */
-export function checkCoordinateOnArc (circleCenterCoordinate, radius, startAngle, endAngle, targetCoordinate) {
+export function checkCoordinateOnArc (circleCenterCoordinate, radius, startAngle, endAngle, targetCoordinate, DEVIATION = 8) {
   if (checkCoordinateOnCircle(circleCenterCoordinate, radius, targetCoordinate)) {
     const startCoordinateX = radius * Math.cos(startAngle) + circleCenterCoordinate.x
     const startCoordinateY = radius * Math.sin(startAngle) + circleCenterCoordinate.y
@@ -209,9 +214,10 @@ export function checkCoordinateOnArc (circleCenterCoordinate, radius, startAngle
  * 检查点是否在三角形内部
  * @param triangleCoordinates
  * @param targetCoordinate
+ * @param DEVIATION
  * @return {boolean}
  */
-export function checkCoordinateInTriangle (triangleCoordinates, targetCoordinate) {
+export function checkCoordinateInTriangle (triangleCoordinates, targetCoordinate, DEVIATION = 8) {
   const square = getTriangleSquare(triangleCoordinates[0], triangleCoordinates[1], triangleCoordinates[2])
   const compareSquare =
     getTriangleSquare(triangleCoordinates[0], triangleCoordinates[1], targetCoordinate) +
@@ -226,9 +232,10 @@ export function checkCoordinateInTriangle (triangleCoordinates, targetCoordinate
  * @param width
  * @param height
  * @param targetCoordinate
+ * @param DEVIATION
  * @return {boolean}
  */
-export function checkCoordinateInDiamond (centerCoordinate, width, height, targetCoordinate) {
+export function checkCoordinateInDiamond (centerCoordinate, width, height, targetCoordinate, DEVIATION = 8) {
   const xDis = Math.abs(centerCoordinate.x - targetCoordinate.x)
   const yDis = Math.abs(centerCoordinate.y - targetCoordinate.y)
   return xDis * height + yDis * width < width * height / 2 + DEVIATION

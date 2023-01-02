@@ -174,6 +174,26 @@ export default class ChartStore {
     }
   }
 
+  addDataList (data, pos) {
+    if (!isArray(data)) {
+      return
+    }
+    const dataSize = this._dataList.length
+    if (pos < dataSize) {
+      this._dataList[pos] = data.shift()
+    }
+    if (data.length > 0) {
+      const additionalBarCount = data.length
+      this._dataList.push(...data)
+      const offsetRightBarCount = this._timeScaleStore.offsetRightBarCount()
+      if (offsetRightBarCount < 0) {
+        this._timeScaleStore.setOffsetRightBarCount(offsetRightBarCount - additionalBarCount)
+      }
+    }
+    this._timeScaleStore.adjustFromTo()
+    this._crosshairStore.recalculate(true)
+  }
+
   /**
    * 清空数据源
    */

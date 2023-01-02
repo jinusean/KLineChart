@@ -30,11 +30,13 @@ limitations under the License.
     <div id="chart"></div>
     <script>
       window.onload = function () {
-        var chart = klinecharts.init('chart')
-        var kdjPaneId = chart.createTechnicalIndicator('KDJ')
+        var chart = klinecharts.init('chart', defautlStyles)
+        console.log(defautlStyles)
+        // var kdjPaneId = chart.createTechnicalIndicator('KDJ')
         var dataList = generated()
         chart.applyNewData(dataList)
-        
+
+
         // 创建
         chart.createTag({
           id: 'tag1',
